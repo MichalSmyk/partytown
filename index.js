@@ -141,12 +141,20 @@ app.get('/shopify/callback', async (req, res) => {
             res.status(200).end(shopResponse);
           })
           .catch((error) => {
-            res.status(error.statusCode).send(error.error.error_description);
-          });
+  if (error.error && error.error.error_description) {
+    res.status(error.statusCode).send(error.error.error_description);
+  } else {
+    res.status(500).send('An error occurred');
+  }
+});
       })
       .catch((error) => {
-        res.status(error.statusCode).send(error.error.error_description);
-      });
+  if (error.error && error.error.error_description) {
+    res.status(error.statusCode).send(error.error.error_description);
+  } else {
+    res.status(500).send('An error occurred');
+  }
+});
 
   } else {
     res.status(400).send('Required parameters missing');
