@@ -34,6 +34,7 @@ app.use('/reverse-proxy', async (req, res) => {
       // headers: req.headers,
       body: req.body
     });
+    console.log("body ", + body);
     const responseContent = await response.text();
     // set fetch response headers to res headers
     [...response.headers].forEach(([key, value]) => { 
