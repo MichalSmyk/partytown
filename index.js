@@ -20,43 +20,43 @@ app.use((req, res, next) => {
   next();
 })
 
-app.use('/proxy', express.static('./static'));
+// app.use('/proxy', express.static('./static'));
 
 app.get('/', (req, res) => {
   res.send('Your server is up. Add shop parameter to url to start a install on a shop. eg /shopify?shop=xxx.myshopify.com');
 });
 
-app.use('/reverse-proxy', async (req, res) => {
-  try {
-    const url = req.query.url;
-    const response = await fetch(url, {
-      method: req.method,
-      // headers: req.headers,
-      body: req.body
-    });
-    console.log("body ", + body);
-    const responseContent = await response.text();
-    // set fetch response headers to res headers
-    [...response.headers].forEach(([key, value]) => { 
-      if (key.toLowerCase() == 'access-control-allow-methods') { 
-        res.setHeader(key, value);
-      }
-    });
-    // remove powered-by-express header
-    res.removeHeader('x-powered-by');
-    // set cors headers
-    res.setHeader('Content-Type', 'application/javascript');
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    // allow all headers
-    res.setHeader('Access-Control-Allow-Headers', '*');
-    // add a cache policy that caches for 1 day
-    res.setHeader('Cache-Control', 'public, max-age=86400');
+// app.use('/reverse-proxy', async (req, res) => {
+//   try {
+//     const url = req.query.url;
+//     const response = await fetch(url, {
+//       method: req.method,
+//       // headers: req.headers,
+//       body: req.body
+//     });
+//     console.log("body ", + body);
+//     const responseContent = await response.text();
+//     // set fetch response headers to res headers
+//     [...response.headers].forEach(([key, value]) => { 
+//       if (key.toLowerCase() == 'access-control-allow-methods') { 
+//         res.setHeader(key, value);
+//       }
+//     });
+//     // remove powered-by-express header
+//     res.removeHeader('x-powered-by');
+//     // set cors headers
+//     res.setHeader('Content-Type', 'application/javascript');
+//     res.setHeader('Access-Control-Allow-Origin', '*');
+//     // allow all headers
+//     res.setHeader('Access-Control-Allow-Headers', '*');
+//     // add a cache policy that caches for 1 day
+//     res.setHeader('Cache-Control', 'public, max-age=86400');
     
-    res.send(responseContent);
-  } catch (err) {
-    res.status(500).send('Could not get resource');
-  }
-});
+//     res.send(responseContent);
+//   } catch (err) {
+//     res.status(500).send('Could not get resource');
+//   }
+// });
 
 // Shopify install route
 app.get('/shopify', (req, res) => {
